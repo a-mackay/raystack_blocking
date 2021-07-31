@@ -1,0 +1,16 @@
+[package]
+name = "raystack_blocking"
+version = "0.11.1"
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[features]
+grid_csv = ["raystack/grid_csv"]
+
+[dependencies]
+chrono = "0.4"
+chrono-tz = "0.5"
+raystack = "0.11.1"
+reqwest = { version = "0.11", default-features = false, features = ["default-tls", "json"] }
+tokio = { version = "1", features = ["rt-multi-thread"] }
+url = "2.2"
