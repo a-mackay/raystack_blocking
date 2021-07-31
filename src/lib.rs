@@ -10,6 +10,8 @@ use tokio::runtime::Runtime;
 use url::Url;
 
 pub mod auth;
+mod utils;
+pub use utils::new_client;
 
 type Result<T> = std::result::Result<T, Error>;
 
