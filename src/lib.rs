@@ -1,32 +1,9 @@
 use chrono::Utc;
 pub use raystack::{
-    BasicNumber,
-    Coord,
-    Date,
-    DateTime,
-    Error,
-    FromHaysonError,
-    Grid,
-    Hayson,
-    HisReadRange,
-    Marker,
-    Na,
-    NewSkySparkClientError,
-    Number,
-    ParseJsonGridError,
-    ParseRefError,
-    ParseTagNameError,
-    Ref,
-    RemoveMarker,
-    ScientificNumber,
-    Symbol,
-    TagName,
-    Time,
-    Uri,
-    ValueExt,
-    Xstr,
-    is_tag_name,
-    skyspark_tz_string_to_tz,
+    is_tag_name, skyspark_tz_string_to_tz, BasicNumber, Coord, Date, DateTime, Error,
+    FromHaysonError, Grid, Hayson, HisReadRange, Marker, Na, NewSkySparkClientError, Number,
+    ParseJsonGridError, ParseRefError, ParseTagNameError, Ref, RemoveMarker, ScientificNumber,
+    Symbol, TagName, Time, Uri, ValueExt, Xstr,
 };
 use std::sync::Arc;
 use tokio::runtime::Runtime;
@@ -72,11 +49,13 @@ impl SkySparkClient {
         rt: Arc<Runtime>,
     ) -> std::result::Result<Self, NewSkySparkClientError> {
         let rclient = reqwest::Client::new();
-        let client = rt.block_on(raystack::SkySparkClient::new_with_client(project_api_url, username, password, rclient))?;
-        Ok(Self {
-            client,
-            rt,
-        })
+        let client = rt.block_on(raystack::SkySparkClient::new_with_client(
+            project_api_url,
+            username,
+            password,
+            rclient,
+        ))?;
+        Ok(Self { client, rt })
     }
 
     /// Return the project name for this client.
@@ -102,39 +81,23 @@ impl SkySparkClient {
     }
 
     /// Returns a grid of history data for a single point.
-    pub fn his_read(
-        &mut self,
-        id: &Ref,
-        range: &HisReadRange,
-    ) -> Result<Grid> {
+    pub fn his_read(&mut self, id: &Ref, range: &HisReadRange) -> Result<Grid> {
         self.rt.block_on(self.client.his_read(id, range))
     }
 
     /// Writes boolean values to a single point.
-    pub fn his_write_bool(
-        &mut self,
-        id: &Ref,
-        his_data: &[(DateTime, bool)],
-    ) -> Result<Grid> {
+    pub fn his_write_bool(&mut self, id: &Ref, his_data: &[(DateTime, bool)]) -> Result<Grid> {
         self.rt.block_on(self.client.his_write_bool(id, his_data))
     }
 
     /// Writes numeric values to a single point. `unit` must be a valid
     /// Haystack unit literal, such as `L/s` or `celsius`.
-    pub fn his_write_num(
-        &mut self,
-        id: &Ref,
-        his_data: &[(DateTime, Number)],
-    ) -> Result<Grid> {
+    pub fn his_write_num(&mut self, id: &Ref, his_data: &[(DateTime, Number)]) -> Result<Grid> {
         self.rt.block_on(self.client.his_write_num(id, his_data))
     }
 
     /// Writes string values to a single point.
-    pub fn his_write_str(
-        &mut self,
-        id: &Ref,
-        his_data: &[(DateTime, String)],
-    ) -> Result<Grid> {
+    pub fn his_write_str(&mut self, id: &Ref, his_data: &[(DateTime, String)]) -> Result<Grid> {
         self.rt.block_on(self.client.his_write_str(id, his_data))
     }
 
@@ -146,7 +109,8 @@ impl SkySparkClient {
         time_zone_name: &str,
         his_data: &[(chrono::DateTime<Utc>, bool)],
     ) -> Result<Grid> {
-        self.rt.block_on(self.client.utc_his_write_bool(id, time_zone_name, his_data))
+        self.rt
+            .block_on(self.client.utc_his_write_bool(id, time_zone_name, his_data))
     }
 
     /// Writes numeric values with UTC timestamps to a single point.
@@ -159,7 +123,8 @@ impl SkySparkClient {
         time_zone_name: &str,
         his_data: &[(chrono::DateTime<Utc>, Number)],
     ) -> Result<Grid> {
-        self.rt.block_on(self.client.utc_his_write_num(id, time_zone_name, his_data))
+        self.rt
+            .block_on(self.client.utc_his_write_num(id, time_zone_name, his_data))
     }
 
     /// Writes string values with UTC timestamps to a single point.
@@ -170,7 +135,8 @@ impl SkySparkClient {
         time_zone_name: &str,
         his_data: &[(chrono::DateTime<Utc>, String)],
     ) -> Result<Grid> {
-        self.rt.block_on(self.client.utc_his_write_str(id, time_zone_name, his_data))
+        self.rt
+            .block_on(self.client.utc_his_write_str(id, time_zone_name, his_data))
     }
 
     /// The Haystack nav operation.
@@ -185,11 +151,7 @@ impl SkySparkClient {
 
     /// Returns a grid containing the records matching the given Axon
     /// filter string.
-    pub fn read(
-        &mut self,
-        filter: &str,
-        limit: Option<u64>,
-    ) -> Result<Grid> {
+    pub fn read(&mut self, filter: &str, limit: Option<u64>) -> Result<Grid> {
         self.rt.block_on(self.client.read(filter, limit))
     }
 
