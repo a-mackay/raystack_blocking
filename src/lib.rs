@@ -78,8 +78,8 @@ impl SkySparkClient {
     }
 
     /// Returns a grid describing what MIME types are available.
-    pub fn formats(&mut self) -> Result<Grid> {
-        self.rt.block_on(self.client.formats())
+    pub fn filetypes(&mut self) -> Result<Grid> {
+        self.rt.block_on(self.client.filetypes())
     }
 
     /// Returns a grid of history data for a single point.
